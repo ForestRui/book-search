@@ -2,7 +2,8 @@ import {useEffect, useState} from 'react';
 import BookCard from './components/BookCard';
 import searchBooks from './api/openLibrary';
 import SearchBar from './components/SearchBar';
-import './App.css'
+import './App.css';
+import Modal from './components/Modal'
 
 
 
@@ -12,6 +13,7 @@ function App() {
    const [error, setError] = useState('');
    const [loading, setLoading] = useState(false);
    const [searched, setSearched] = useState(false);
+   const [selectedBook, setSelectedBook] = useState(null);
    
 
   async function handleSearch(query) {
@@ -47,9 +49,10 @@ function App() {
       <ul className="book-list">
       {books.map((book) => (
         
-       <BookCard book={book} key={book.key} />
+       <BookCard book={book} key={book.key} onSelect={setSelectedBook} />
       
       ))}
+      {selectedBook && <Modal key={selectedBook.key} book={selectedBook} onClose={() => setSelectedBook(null)} />}
       </ul>
      </div>
     

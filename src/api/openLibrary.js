@@ -2,7 +2,7 @@ async function searchBooks(query) {
     
 
     const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}` +
-    `&limit=20&fields=key,title,author_name,first_publish_year,cover_i`;
+    `&limit=20&fields=key,title,author_name,first_publish_year,cover_i,ratings_count,ratings_average`;
     
     const response = await fetch(url);
     
@@ -20,5 +20,7 @@ async function searchBooks(query) {
    
 
 }
+
+
 
 export default searchBooks;

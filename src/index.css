@@ -1,22 +1,22 @@
 :root {
   /* Backgrounds */
   --bg: #ffffff;
-  --bg-hover: #fff9ec;          /* white can't get brighter, so hover adds a warm tint */
+  --bg-hover: #fff9ec;
 
-  /* Surface: slightly darker than bg */
-  --surface: #f3eee4;
-  --surface-hover: #faf6ee;     /* brighter */
+  /* Surface: light mint, slightly darker than bg */
+  --surface: #e6f1e9;
+  --surface-hover: #f2f9f4;     /* brighter */
 
-  /* Theme: brown-yellow (dark goldenrod) */
-  --theme: #a8760f;
-  --theme-secondary: #aa8372;
-  --theme-hover: #c8921f;       /* brighter */
+  /* Theme: soft green */
+  --theme: #5fae7a;
+  --theme-secondary: #8fb59b;
+  --theme-hover: #7cc593;       /* brighter */
 
-  /* Contrast: attention-grabbing yellow */
-  --accent: #ffd60a;
-  --accent-hover: #ffe55c;      /* brighter */
+  /* Contrast: lime for attention */
+  --accent: #a8e05f;
+  --accent-hover: #c0ec86;      /* brighter */
 
-  /* Text (not requested, but you'll need these) */
+  /* Text */
   --text: #2b2113;
   --text-muted: #6b5d4a;
   --text-on-theme: #ffffff;
@@ -57,26 +57,42 @@
 
 /* Card */
 .book-card {
-  height: 20vh;
+  height: 25vh;
   width: 80%;
-  align-self: center ;          
+  align-self: center;          
   display: flex;                 /* image on the left, text on the right */
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
   
+
   padding: 0.75rem;
   overflow: hidden;
-  background-color: var(--theme);
+  background-color: var(--bg-hover);
   border-radius: 8px;
-  transition: background-color 0.2s ease;
-  border-bottom: 1px solid var(--text-muted);
+  transition: background-color 0.2s ease, transform 0.3s ease;
+  border-bottom: 1px solid var(--text-on-accent);
 
   color: black;
+
+
+}
+
+.book-card .book-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--text);
 }
 
 .book-card:hover {
   background-color: var(--theme-hover);
+  transform: translate(1px, -7px);
+  cursor: pointer;
 }
 
-.book-card img {
+/* item 1 */
+.book-card .book-cover {
   height: 100%;
   width: auto;
   object-fit: cover;
@@ -84,8 +100,51 @@
   flex-shrink: 0;
 }
 
+
+/* item 2 */
 .book-card-info {
   overflow: hidden;
+}
+
+.book-rating {
+    position: relative;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    color: var(--text-muted);
+}
+
+/* when hovering .book-rating, .rating-count shows */ 
+
+.rating-count {
+    position: absolute;
+    top: 100%;       /* Push it to the right of the star */
+    margin-left: 8px; /* Add a little gap */
+    white-space: nowrap; /* Prevent the text from wrapping */
+
+    
+    opacity: 0;
+    background-color: var(--surface-hover);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.book-rating:hover .rating-count {
+   cursor: pointer;
+   opacity: 1;
+}
+
+
+/* item 3 */
+.book-card .book-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.book-actions button{
+ width: 85%;
 }
 
 /* Search Form */
@@ -102,3 +161,142 @@
    padding: 0.5rem 0.75rem;
 }
 
+/* Modal box */
+.book-modal {
+  width: 80vw;
+  height: 80vh;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--bg-hover);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;            /* the dialog itself never scrolls; only .modal-right does */
+}
+
+/* Flex only while open. A plain `display: flex` would override the browser's
+   display:none for closed dialogs and show them on the page */
+.book-modal[open] {
+  display: flex;
+  flex-direction: column;      /* row 1: content, row 2: close button */
+}
+
+/* Holds left + right side by side */
+.modal-content {
+  flex: 1;                     /* take all height except the button row */
+  min-height: 0;               /* lets children shrink/scroll instead of stretching the dialog */
+  display: flex;
+  gap: 1rem;
+}
+
+/* Left half: never taller than the modal, no scrolling */
+.modal-left {
+  flex: 1 1 0;                 /* exactly half the width (same basis as .modal-right) */
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;            /* anything too tall is clipped, never overflows the dialog */
+}
+
+/* Cover takes whatever height is left after the title and author,
+   and object-fit keeps the picture's proportions inside that space */
+.modal-left .book-cover {
+  flex: 1 1 0;
+  min-height: 0;               /* allows the image to shrink below its natural height */
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Right half: the only scrollable part, children stacked with a gap */
+.modal-right {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;               /* required, or overflow-y never kicks in */
+  padding: 1rem;
+  overflow-y: auto;            /* scrolls only when the content is taller than the box */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Stops flex from squashing paragraphs; they overflow and scroll instead */
+.modal-right > * {
+  flex-shrink: 0;
+}
+
+
+.modal-button {
+  align-self: center;
+  margin-top: 1rem;
+}
+
+.book-modal .modal-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.5vw, 2rem); /* scales with screen width, within limits */
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text);
+}
+
+/* Short accent bar under the title */
+.book-modal .modal-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 0.5rem auto 0;
+  background-color: var(--accent);
+  border-radius: 2px;
+}
+
+/* Author: secondary info, smaller and muted */
+.book-modal .book-author {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+/* Year: small pill badge */
+.book-modal .modal-year {
+  margin: 0;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  background-color: var(--surface);
+  border-radius: 999px; /* fully rounded ends */
+}
+
+/* Rating: eye-catching lime pill, sized to its content */
+.book-modal .book-rating {
+  align-self: flex-start;      /* in the column layout, don't stretch to full width */
+  margin: 0;
+  padding: 0.4rem 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+  border-radius: 999px;
+}
+
+.book-rating .star {
+  margin-left: 0.25rem;     
+}
+
+.book-rating .rating-count {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* Description: comfortable reading text with a green side bar */
+.book-modal .modal-description {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--theme);
+  font-size: 1.05rem;
+  line-height: 1.7;            /* generous spacing makes long text easier to read */
+  white-space: pre-line;       /* keeps the paragraph breaks from Open Library */
+  color: var(--text);
+}

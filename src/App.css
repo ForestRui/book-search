@@ -1,21 +1,22 @@
 :root {
   /* Backgrounds */
   --bg: #ffffff;
-  --bg-hover: #fff9ec;          /* white can't get brighter, so hover adds a warm tint */
+  --bg-hover: #fff9ec;
 
-  /* Surface: slightly darker than bg */
-  --surface: #f3eee4;
-  --surface-hover: #faf6ee;     /* brighter */
+  /* Surface: light mint, slightly darker than bg */
+  --surface: #e6f1e9;
+  --surface-hover: #f2f9f4;     /* brighter */
 
-  /* Theme: brown-yellow (dark goldenrod) */
-  --theme: #a8760f;
-  --theme-hover: #c8921f;       /* brighter */
+  /* Theme: soft green */
+  --theme: #5fae7a;
+  --theme-secondary: #8fb59b;
+  --theme-hover: #7cc593;       /* brighter */
 
-  /* Contrast: attention-grabbing yellow */
-  --accent: #ffd60a;
-  --accent-hover: #ffe55c;      /* brighter */
+  /* Contrast: lime for attention */
+  --accent: #a8e05f;
+  --accent-hover: #c0ec86;      /* brighter */
 
-  /* Text (not requested, but you'll need these) */
+  /* Text */
   --text: #2b2113;
   --text-muted: #6b5d4a;
   --text-on-theme: #ffffff;
@@ -32,7 +33,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--bg);
+  background-color: var(--theme-secondary);
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
